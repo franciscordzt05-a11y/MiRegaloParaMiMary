@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Para ti ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: Arial;
+  color: white;
+  text-align: center;
+  background: black;
+}
+
+/* 🌌 Fondo galaxia */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+/* 💌 Carta */
+#carta {
+  margin-top: 100px;
+  animation: aparecer 2s ease;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  background: pink;
+  color: black;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* 🎁 Regalo */
+#gift {
+  display: none;
+  font-size: 100px;
+  margin-top: 80px;
+  cursor: pointer;
+  transition: transform 0.5s, opacity 0.5s;
+}
+
+#gift.abrir {
+  transform: scale(2) rotate(20deg);
+  opacity: 0;
+}
+
+/* 🎥 Contenido */
+#contenido {
+  display: none;
+  margin-top: 20px;
+  animation: aparecer 2s ease;
+}
+
+video {
+  width: 90%;
+  border-radius: 20px;
+  box-shadow: 0 0 25px purple;
+}
+
+/* 📸 Fotos */
+.foto {
+  width: 150px;
+  border-radius: 15px;
+  margin: 10px;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: 1s;
+}
+
+.foto.mostrar {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 💖 Corazones */
+.heart {
+  position: absolute;
+  color: pink;
+  animation: flotar 5s linear infinite;
+}
+
+@keyframes flotar {
+  0% { transform: translateY(100vh); opacity: 1; }
+  100% { transform: translateY(-10vh); opacity: 0; }
+}
+
+/* ✨ Partículas */
+.sparkle {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: white;
+  border-radius: 50%;
+  animation: brillar 3s infinite;
+}
+
+@keyframes brillar {
+  0%,100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="stars"></canvas>
+
+<!-- 💌 Carta -->
+<div id="carta">
+  <h2>Mi mary linda ¿adivina que? hoy cumplessss añosssssss 💕</h2>
+  <p>
+    Perdon, me porte mal muy mal, pero este dia es muy especial para mi ✨<br>
+    Hoy cumple 17 años la mujer que mas amo, disfruta tu dia mi mary y diviertete muchisimo 💖
+  </p>
+  <button onclick="mostrarRegalo()">Abrir sorpresa 🎁</button>
+</div>
+
+<!-- 🎁 Regalo -->
+<div id="gift" onclick="abrirRegalo()">🎁</div>
+
+<!-- 🎥 Contenido -->
+<div id="contenido">
+  <h2>Feliz cumpleaños ❤️</h2>
+
+  <video controls autoplay>
+    <source src="video.mp4" type="video/mp4">
+  </video>
+
+  <audio id="musica" loop>
+    <source src="musica.mp3" type="audio/mp3">
+  </audio>
+
+  <p>Te amo muchísimo 💖</p>
+
+  <!-- 📸 Fotos -->
+  <div>
+    <img src="foto1.jpg" class="foto">
+    <img src="foto2.jpg" class="foto">
+    <img src="foto3.jpg" class="foto">
+  </div>
+</div>
+
+<script>
+
+/* 🌌 Estrellas */
+let canvas = document.getElementById("stars");
+let ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let stars = [];
+
+for (let i = 0; i < 100; i++) {
+  stars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 2
+  });
+}
+
+function drawStars() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = "white";
+  stars.forEach(s => {
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fill();
+  });
+}
+
+setInterval(drawStars, 50);
+
+/* 💌 Mostrar regalo */
+function mostrarRegalo() {
+  document.getElementById("carta").style.display = "none";
+  document.getElementById("gift").style.display = "block";
+}
+
+/* 🎁 Abrir regalo */
+function abrirRegalo() {
+  let regalo = document.getElementById("gift");
+  regalo.classList.add("abrir");
+
+  setTimeout(() => {
+    regalo.style.display = "none";
+    document.getElementById("contenido").style.display = "block";
+    document.getElementById("musica").play();
+    mostrarFotos();
+  }, 500);
+}
+
+/* 📸 Animar fotos */
+function mostrarFotos() {
+  let fotos = document.querySelectorAll(".foto");
+  fotos.forEach((f, i) => {
+    setTimeout(() => {
+      f.classList.add("mostrar");
+    }, i * 1000);
+  });
+}
+
+/* 💖 Corazones */
+setInterval(() => {
+  let heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random() * 100 + "vw";
+  document.body.appendChild(heart);
+
+  setTimeout(() => heart.remove(), 5000);
+}, 300);
+
+/* ✨ Brillos */
+setInterval(() => {
+  let sparkle = document.createElement("div");
+  sparkle.className = "sparkle";
+  sparkle.style.left = Math.random() * 100 + "vw";
+  sparkle.style.top = Math.random() * 100 + "vh";
+  document.body.appendChild(sparkle);
+
+  setTimeout(() => sparkle.remove(), 3000);
+}, 200);
+
+</script>
+
+</body>
+</html>
